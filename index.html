@@ -76,6 +76,9 @@
         src="https://e7.pngegg.com/pngimages/899/799/png-clipart-urdu-poetry-joke-hindi-love-humour-flesh-love-desktop-wallpaper-thumbnail.png"
         alt="Imagem de um burro"
       />
+      <audio id="burroSom" src="./chaves-ai-que-burro-da-zero-pra-ele.mp3">
+        Desculpe, seu navegador não suporta o elemento de áudio ou o arquivo de som não foi encontrado.
+      </audio>
     </div>
 
     <script>
@@ -85,6 +88,9 @@
 
       // Garante que a imagem do burro esteja oculta no início
       document.getElementById("burroImagem").style.display = "none";
+
+      // Carrega o som do burro
+      const burroSom = document.getElementById("burroSom");
 
       function verificarPalpite() {
         const palpiteInput = document.getElementById("palpite");
@@ -109,19 +115,27 @@
 
         // Verifica se acertou
         if (palpite === numeroSecreto) {
-          mensagem.innerHTML = `🎈 PARABÉNS! Você acertou o número ${numeroSecreto} em ${tentativas} tentativas! És o Einstien Supremo🎈<br>Jogue novamente clicando em Recomeçar!`;
+          mensagem.innerHTML = `🎈 PARABÉNS! Você acertou o Número ${numeroSecreto} em ${tentativas} tentativas! És o Einstien Supremo🎈<br>Jogue novamente clicando em Recomeçar!`;
           palpiteInput.disabled = true;
-          document.querySelector(
-            "button[onclick='verificarPalpite()']"
-          ).disabled = true;
+          document.querySelector("button[onclick='verificarPalpite()']").disabled = true;
         } else if (palpite < numeroSecreto) {
           mensagem.innerHTML =
             "⬆️ Seu palpite é MUITO BAIXO! Tente um número maior! Percebeste bem???";
           burroImagem.style.display = "block"; // Mostra a imagem do burro
+          try {
+            burroSom.play(); // Toca o som do burro
+          } catch (e) {
+            mensagem.innerHTML += "<br>⚠️ Não foi possível tocar o som do burro. Verifique se o arquivo 'burro.mp3' está na mesma pasta do index.html!";
+          }
         } else {
           mensagem.innerHTML =
             "⬇️ Seu palpite é MUITO ALTO! Tente um número menor! Percebeste bem???";
           burroImagem.style.display = "block"; // Mostra a imagem do burro
+          try {
+            burroSom.play(); // Toca o som do burro
+          } catch (e) {
+            mensagem.innerHTML += "<br>⚠️ Não foi possível tocar o som do burro. Verifique se o arquivo 'burro.mp3' está na mesma pasta do index.html!";
+          }
         }
 
         // Dica a cada 3 tentativas
@@ -148,9 +162,7 @@
         const burroImagem = document.getElementById("burroImagem");
         palpiteInput.value = "";
         palpiteInput.disabled = false;
-        document.querySelector(
-          "button[onclick='verificarPalpite()']"
-        ).disabled = false;
+        document.querySelector("button[onclick='verificarPalpite()']").disabled = false;
         mensagem.innerHTML = "";
         burroImagem.style.display = "none";
         palpiteInput.focus();
