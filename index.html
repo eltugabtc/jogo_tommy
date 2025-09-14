@@ -8,8 +8,12 @@
       body {
         font-family: Arial, sans-serif;
         text-align: center;
-        background-color: #f0f8ff;
+        background-image: url('./math_background.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
         padding: 20px;
+        min-height: 100vh;
       }
       h1 {
         color: #2e8b57;
@@ -52,6 +56,12 @@
         margin: 20px auto;
         display: block;
       }
+      #videoCelebracao {
+        display: none;
+        max-width: 300px;
+        margin: 20px auto;
+        display: block;
+      }
     </style>
   </head>
   <body>
@@ -76,7 +86,10 @@
         src="https://e7.pngegg.com/pngimages/899/799/png-clipart-urdu-poetry-joke-hindi-love-humour-flesh-love-desktop-wallpaper-thumbnail.png"
         alt="Imagem de um burro"
       />
-      <audio id="burroSom" src="./chaves-ai-que-burro-da-zero-pra-ele.mp3">
+      <video id="videoCelebracao" src="./confetis.mp4" controls autoplay loop>
+        Desculpe, seu navegador não suporta o elemento de vídeo ou o arquivo 'fireworks.mp4' não foi encontrado.
+      </video>
+      <audio id="burroSom" src="./burro.mp3">
         Desculpe, seu navegador não suporta o elemento de áudio ou o arquivo de som não foi encontrado.
       </audio>
     </div>
@@ -86,8 +99,9 @@
       let numeroSecreto = Math.floor(Math.random() * 1001);
       let tentativas = 0;
 
-      // Garante que a imagem do burro esteja oculta no início
+      // Garante que a imagem do burro e o vídeo estejam ocultos no início
       document.getElementById("burroImagem").style.display = "none";
+      document.getElementById("videoCelebracao").style.display = "none";
 
       // Carrega o som do burro
       const burroSom = document.getElementById("burroSom");
@@ -96,11 +110,13 @@
         const palpiteInput = document.getElementById("palpite");
         const mensagem = document.getElementById("mensagem");
         const burroImagem = document.getElementById("burroImagem");
+        const videoCelebracao = document.getElementById("videoCelebracao");
         const palpite = parseInt(palpiteInput.value);
         tentativas++;
 
-        // Esconde a imagem do burro por padrão
+        // Esconde a imagem do burro e o vídeo por padrão
         burroImagem.style.display = "none";
+        videoCelebracao.style.display = "none";
 
         // Verifica se o palpite é válido
         if (isNaN(palpite)) {
@@ -115,9 +131,15 @@
 
         // Verifica se acertou
         if (palpite === numeroSecreto) {
-          mensagem.innerHTML = `🎈 PARABÉNS! Você acertou o Número ${numeroSecreto} em ${tentativas} tentativas! És o Einstien Supremo🎈<br>Jogue novamente clicando em Recomeçar!`;
+          mensagem.innerHTML = `🎈 PARABÉNS! Você acertou o número ${numeroSecreto} em ${tentativas} tentativas! És o Einstien Supremo🎈<br>Jogue novamente clicando em Recomeçar!`;
           palpiteInput.disabled = true;
           document.querySelector("button[onclick='verificarPalpite()']").disabled = true;
+          videoCelebracao.style.display = "block"; // Mostra o vídeo de celebração
+          try {
+            videoCelebracao.play(); // Tenta reproduzir o vídeo
+          } catch (e) {
+            mensagem.innerHTML += "<br>⚠️ Não foi possível reproduzir o vídeo. Verifique se o arquivo 'fireworks.mp4' está na mesma pasta do index.html!";
+          }
         } else if (palpite < numeroSecreto) {
           mensagem.innerHTML =
             "⬆️ Seu palpite é MUITO BAIXO! Tente um número maior! Percebeste bem???";
@@ -160,11 +182,15 @@
         const palpiteInput = document.getElementById("palpite");
         const mensagem = document.getElementById("mensagem");
         const burroImagem = document.getElementById("burroImagem");
+        const videoCelebracao = document.getElementById("videoCelebracao");
         palpiteInput.value = "";
         palpiteInput.disabled = false;
         document.querySelector("button[onclick='verificarPalpite()']").disabled = false;
         mensagem.innerHTML = "";
         burroImagem.style.display = "none";
+        videoCelebracao.style.display = "none";
+        videoCelebracao.pause(); // Pausa o vídeo ao recomeçar
+        videoCelebracao.currentTime = 0; // Reseta o vídeo para o início
         palpiteInput.focus();
       }
 
